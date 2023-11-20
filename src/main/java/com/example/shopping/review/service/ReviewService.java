@@ -4,9 +4,11 @@ import com.example.shopping.common.RestError;
 import com.example.shopping.common.RestResult;
 import com.example.shopping.member.domain.entity.Member;
 import com.example.shopping.member.repository.MemberRepository;
+import com.example.shopping.review.domain.Response.ReviewResponse;
 import com.example.shopping.review.domain.entity.Review;
 import com.example.shopping.review.domain.entity.ReviewMember;
 import com.example.shopping.review.domain.request.ReviewRequest;
+import com.example.shopping.review.domain.request.ReviewUpdateRequest;
 import com.example.shopping.review.repository.ReviewMemberRepository;
 import com.example.shopping.review.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
@@ -107,6 +109,16 @@ public class ReviewService {
 
         //review_member 테이블에 값이 지워졌을 때
         //review 의 heart 수를 내려줘
+    }
+
+    public ReviewResponse updateReview(Long reviewSeq, ReviewUpdateRequest reviewUpdateRequest) {
+        Review review = findById(reviewSeq);
+        review.update(reviewUpdateRequest.getContent(), reviewUpdateRequest.getRating(), reviewUpdateRequest.getReviewImg());
+        return new ReviewResponse(review);
+    }
+
+    private Review findById(Long reviewSeq) {
+        return reviewRepository.findById(reviewSeq).orElseThrow(() -> new RuntimeException());
     }
 
     public void deleteReview(Long reviewSeq) {

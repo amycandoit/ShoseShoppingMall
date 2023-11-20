@@ -32,4 +32,10 @@ public class Review {
 
     @OneToMany(mappedBy = "review", fetch = FetchType.LAZY)
     private List<ReviewMember> reviewMembers;
+
+    public void update(String content, Integer rating, String reviewImg) {
+        this.content = content;
+        this.rating = rating;
+        this.reviewImg = reviewImg;
+    }
 }
